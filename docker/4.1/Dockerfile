@@ -9,8 +9,7 @@ WORKDIR /usr/src/app
 RUN apt-get update -y && \
 	apt-get install -y \
 		python3-dev \
-		default-lib \
-		mysqlclient-dev \
+		default-libmysqlclient-dev \
 		build-essential \
 		&& rm -rf /var/lib/apt/lists/*
 
