@@ -3,14 +3,14 @@
 If You want to build a website with Django "webapp" at short time; 
 
 #### Full stack Apache2 Django "webapp":
-<p align="left"> <a href="https://www.djangoproject.com/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/27804?s=200&v=4" alt="Django" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/docker/docker.png" alt="docker" width="40" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://mariadb.org/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/5877084?s=200&v=4" alt="mariadb" height="50" width="50"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://www.apache.org" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/47359?s=200&v=4" alt="apache2" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://www.php.net" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/25158?s=200&v=4" alt="php" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://redis.io" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/1529926?s=200&v=4" alt="redis" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="#" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bash/bash.png" alt="Bash" height="50" width="50" /> </a>&nbsp;&nbsp;&nbsp;
+<p align="left"> <a href="https://www.djangoproject.com/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/27804?s=200&v=4" alt="Django" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/docker/docker.png" alt="docker" width="40" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://mariadb.org/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/5877084?s=200&v=4" alt="mariadb" height="50" width="50"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://www.apache.org" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/47359?s=200&v=4" alt="apache2" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://redis.io" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/1529926?s=200&v=4" alt="redis" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="#" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bash/bash.png" alt="Bash" height="50" width="50" /> </a>&nbsp;&nbsp;&nbsp;
  <a href="https://www.phpmyadmin.net/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/1351977?s=200&v=4" alt="phpmyadmin" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://letsencrypt.org/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/17889013?s=200&v=4" alt="letsencrypt" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; <a href="https://www.portainer.io/?hsLang=en" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/22225832?s=200&v=4" alt="portainer" height="40" width="40"/> </a> </p>
 
 Plus, manage docker containers with Portainer.
 
 #### With this project you can quickly run the following:
 
-- [Django](https://github.com/django) - [php-fpm](https://hub.docker.com/_/php?tab=tags&page=1&name=fpm)
+- [Django](https://github.com/django)
 - [webserver (apache2/httpd)](https://hub.docker.com/_/httpd)
 - [certbot (letsencrypt)](https://hub.docker.com/r/certbot/certbot)
 - [phpMyAdmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin/)
@@ -41,7 +41,6 @@ Create rules to open ports to the internet, or to a specific IPv4 address or ran
 	- [Webserver](#webserver)
 	- [Database](#database)
 	- [Redis](#redis)
-	- [Cache](#cache)
 	- [phpMyAdmin](#phpmyadmin)
 	- [backup](#backup)					  
 
@@ -213,19 +212,13 @@ docker compose up -d
 
 ### Website
 
-You should see the "Hello, world!" page in your browser. If not, please check if your PHP installation satisfies Django's requirements.
+You should see the "Hello, world!" page in your browser. If not, please check if your installation satisfies Django's requirements.
 
 ```
 https://example.com
 ```
 
-add or remove code in the ./php-fpm/php/conf.d/security.ini file for custom php.ini configurations
-
-[https://www.php.net/manual/en/configuration.file.php](https://www.php.net/manual/en/configuration.file.php)
-
-You should make changes custom host configurations ```./php-fpm/php-fpm.d/z-www.conf``` then must restart service, FPM uses php.ini syntax for its configuration file - php-fpm.conf, and pool configuration files.
-
-[https://www.php.net/manual/en/install.fpm.configuration.php](https://www.php.net/manual/en/install.fpm.configuration.php)
+The ./django/webapp root directory is a container for your project and add or remove code in the .py extended file for configurations.
 
 ```
 docker container restart django
@@ -243,32 +236,43 @@ add or remove code in the ```./webserver/extra/httpd-ssl.conf``` file for custom
 #### Database
 
 ```
-$db=new DB\SQL(
-    'mysql:host=database;port=3306;dbname=${DB_NAME}',
-    '${DB_USER}',
-    '${DB_PASSWORD}'
-);
+# settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': '/path/to/my.cnf',
+        },
+    }
+}
+```
+```
+# my.cnf
+[client]
+database = database
+user = ${DB_USER}
+password = ${DB_PASSWORD}
+default-character-set = utf8
 ```
 
-[https://fatfreeframework.com/3.8/databases](https://fatfreeframework.com/3.8/databases)
+[https://docs.djangoproject.com/en/4.1/ref/databases/#mariadb-notes](https://docs.djangoproject.com/en/4.1/ref/databases/#mariadb-notes)
 
 [https://mariadb.com/kb/en/configuring-mariadb-with-option-files/](https://mariadb.com/kb/en/configuring-mariadb-with-option-files/)
 
 #### Redis
 
-There is a good Cache Engine User Guide that covers how the cache engine works and gives you tips to improve your application and your database queries, as they can be cached by F3 as well. You really should have read it.
+The new django.core.cache.backends.redis.RedisCache cache backend provides built-in support for caching with Redis.
 
-Redis host = redis
+```
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379',
+    }
+}
+```
 
-Redis host port = 6379
-
-[https://fatfreeframework.com/3.8/cache](https://fatfreeframework.com/3.8/cache)
-
-#### Cache
-
-Caching static Web pages - so the code in some route handlers can be skipped and templates don't have to be reprocessed - is one way of reducing your Web server's work load so it can focus on other tasks.
-
-[https://fatfreeframework.com/3.8/optimization](https://fatfreeframework.com/3.8/optimization)
+[https://docs.djangoproject.com/en/4.1/releases/4.0/#redis-cache-backend](https://docs.djangoproject.com/en/4.1/releases/4.0/#redis-cache-backend)
 
 ### phpMyAdmin
 
