@@ -218,12 +218,6 @@ You should see the "Hello, world!" page in your browser. If not, please check if
 https://example.com
 ```
 
-The ./django/webapp root directory is a container for your project and add or remove code in the .py extended file for configurations.
-
-```
-docker container restart django
-```
-
 add and/or remove django site folders and files with any ftp client program in ```./django/webapp``` folder.
 <br />You can also visit `https://example.com` to access website after starting the containers.
 
