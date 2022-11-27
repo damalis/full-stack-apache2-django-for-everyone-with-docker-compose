@@ -5,8 +5,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV TZ=${LOCAL_TIMEZONE}
 
-RUN	apt-get update -y && \
-	apt-get install -y \
+RUN apt-get update -y && \
+    apt-get install -y \
 		python3-dev \
 		default-libmysqlclient-dev \
 		build-essential \
