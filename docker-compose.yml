@@ -11,11 +11,11 @@ services:
         networks:
             - backend
         volumes:
-            - 'html:/home/html'
+            - 'html:${WEBSERVER_DOC_ROOT}'
         hostname: django
         restart: unless-stopped
         ports:
-            - '9000'
+            - '9000:8000'
         links:
             - database
             - redis
@@ -26,6 +26,9 @@ services:
         #    retries: 3
         #    start_period: 10s
         environment:
+            DB_USER: '${DB_USER}'
+            DB_PASSWORD: '${DB_PASSWORD}'
+            DB_NAME: '${DB_NAME}'
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
