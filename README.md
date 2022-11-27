@@ -218,6 +218,15 @@ You should see the "The install worked successfully! Congratulations!" page in y
 https://example.com
 ```
 
+must add import os at the top of your settings.py file:
+
+```
+# settings.py
+import os # new
+
+from pathlib import Path
+```
+
 You might need to edit ALLOWED_HOSTS inside settings.py and add your Docker host name or IP address to the list. For demo purposes, you can set the value to:
 
 ```ALLOWED_HOSTS = ['*']```
