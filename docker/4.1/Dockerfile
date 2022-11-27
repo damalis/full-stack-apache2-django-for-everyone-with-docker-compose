@@ -17,7 +17,10 @@ COPY ./requirements.txt .
 
 RUN python -m pip install -r requirements.txt
 
-WORKDIR $WEBSERVER_DOC_ROOT
+RUN useradd -U html
+ENV APP_HOME=/home/html
+
+WORKDIR $APP_HOME
 
 RUN django-admin startproject webapp
 
