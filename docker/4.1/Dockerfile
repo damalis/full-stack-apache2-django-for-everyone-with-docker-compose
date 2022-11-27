@@ -1,28 +1,30 @@
 FROM python:3.11
+LABEL maintainer="damalis"
 
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 ENV TZ=${LOCAL_TIMEZONE}
-	
-RUN python -m pip install --upgrade pip
-
-WORKDIR /usr/src/app
 
 RUN apt-get update -y && \
 	apt-get install -y \
 		python3-dev \
 		default-libmysqlclient-dev \
 		build-essential \
+		--no-install-recommends \
 		&& rm -rf /var/lib/apt/lists/*
 
-COPY ./requirements.txt .
+RUN pip install --upgrade pip
 
-RUN python -m pip install -r requirements.txt
+COPY ./requirements.txt /tmp/requirements.txt
 
-RUN useradd -U html
-ENV APP_HOME=/home/html
-
-WORKDIR $APP_HOME
-
-RUN django-admin startproject webapp
-
+WORKDIR /app
 EXPOSE 9000
-CMD ["@"]
+
+RUN pip install -r /tmp/requirements.txt \
+		&& rm -rf /tmp \
+		&& adduser \
+		--disabled-password \
+		--no-create-home \
+		html
+
+RUN django-admin startproject webapp .
