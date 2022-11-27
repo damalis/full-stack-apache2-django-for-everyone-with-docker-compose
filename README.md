@@ -212,10 +212,22 @@ docker compose up -d
 
 ### Website
 
-You should see the "Hello, world!" page in your browser. If not, please check if your installation satisfies Django's requirements.
+You should see the "The install worked successfully! Congratulations!" page in your browser. If not, please check if your installation satisfies Django's requirements.
 
 ```
 https://example.com
+```
+
+You might need to edit ALLOWED_HOSTS inside settings.py and add your Docker host name or IP address to the list. For demo purposes, you can set the value to:
+
+```ALLOWED_HOSTS = ['*']```
+
+This value is not safe for production usage. Refer to the [Django documentation](https://docs.djangoproject.com/en/1.11/ref/settings/#allowed-hosts) for more information.
+
+```TIME_ZONE = os.environ.get('LOCAL_TIMEZONE')```
+
+```
+docker container restart django
 ```
 
 add and/or remove django site folders and files with any ftp client program in ```./django/webapp``` folder.
@@ -234,19 +246,13 @@ add or remove code in the ```./webserver/extra/httpd-ssl.conf``` file for custom
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/path/to/my.cnf',
-        },
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': 'database',
+        'PORT': 3306,
     }
 }
-```
-```
-# my.cnf
-[client]
-database = database
-user = ${DB_USER}
-password = ${DB_PASSWORD}
-default-character-set = utf8
 ```
 
 [https://docs.djangoproject.com/en/4.1/ref/databases/#mariadb-notes](https://docs.djangoproject.com/en/4.1/ref/databases/#mariadb-notes)
