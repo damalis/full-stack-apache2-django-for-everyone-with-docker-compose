@@ -7,24 +7,26 @@ ENV TZ=${LOCAL_TIMEZONE}
 
 RUN apt-get update -y && \
     apt-get install -y \
-		python3-dev \
-		default-libmysqlclient-dev \
-		build-essential \
-		--no-install-recommends \
-		&& rm -rf /var/lib/apt/lists/*
+                python3-dev \
+                default-libmysqlclient-dev \
+                build-essential \
+                --no-install-recommends \
+                && rm -rf /var/lib/apt/lists/*
+
+RUN adduser --disabled-password html
+
+USER html
+
+ENV PATH="$PATH:/home/html/.local/bin"
 
 RUN pip install --upgrade pip
 
-COPY ./requirements.txt /tmp/requirements.txt
+COPY --chown=html:html ./requirements.txt /tmp/requirements.txt
 
 WORKDIR /app
 EXPOSE 9000
 
-RUN pip install -r /tmp/requirements.txt \
-		&& rm -rf /tmp \
-		&& adduser \
-		--disabled-password \
-		--no-create-home \
-		html
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
+		&& rm -rf /tmp/*
 
-RUN django-admin startproject webapp .
+COPY --chown=html:html . .
