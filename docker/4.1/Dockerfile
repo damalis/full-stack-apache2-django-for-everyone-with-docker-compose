@@ -13,7 +13,7 @@ RUN apt-get update -y && \
                 --no-install-recommends \
                 && rm -rf /var/lib/apt/lists/*
 
-RUN adduser --disabled-password html
+RUN adduser --disabled-password --gecos '' html
 
 USER html
 
