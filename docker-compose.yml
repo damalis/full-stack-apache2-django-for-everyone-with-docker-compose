@@ -32,7 +32,7 @@ services:
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
-        command: bash -c "gunicorn webapp.wsgi -b :9000"
+        command: sh -c "if [ ! -f \"/app/manage.py\" ]; then django-admin startproject webapp . ; fi && gunicorn webapp.wsgi -b 0.0.0.0:9000"
 
     webserver:
         depends_on:
