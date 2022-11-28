@@ -117,6 +117,10 @@ docker volume create --driver local --opt type=none --opt device=${DIRECTORY_PAT
 ```
 
 ```
+docker compose run --rm django sh -c "django-admin startproject webapp . " > /dev/null 2>&1
+```
+
+```
 docker compose up -d
 ```
 
