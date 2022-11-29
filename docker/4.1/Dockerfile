@@ -1,17 +1,19 @@
 FROM python:3.11
 LABEL maintainer="damalis"
 
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NOWARNINGS="yes"
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV TZ=${LOCAL_TIMEZONE}
 
 RUN apt-get update -y && \
-    apt-get install -y \
-                python3-dev \
-                default-libmysqlclient-dev \
-                build-essential \
-                --no-install-recommends \
-                && rm -rf /var/lib/apt/lists/*
+    apt-get install -y apt-utils \
+		--no-install-recommends \
+		python3-dev \
+		default-libmysqlclient-dev \
+		build-essential \
+		&& rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos '' html
 
@@ -27,6 +29,6 @@ WORKDIR /app
 EXPOSE 9000
 
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
-		&& rm -rf /tmp/*
+                && rm -rf /tmp/*
 
 COPY --chown=html:html . .
