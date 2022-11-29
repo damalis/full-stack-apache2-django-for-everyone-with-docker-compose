@@ -281,7 +281,7 @@ CACHES = {
 }
 ```
 
-[https://docs.djangoproject.com/en/4.1/releases/4.0/#redis-cache-backend](https://docs.djangoproject.com/en/4.1/releases/4.0/#redis-cache-backend)
+[https://docs.djangoproject.com/en/4.1/topics/cache/#redis](https://docs.djangoproject.com/en/4.1/topics/cache/#redis)
 
 ### phpMyAdmin
 
