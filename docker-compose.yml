@@ -11,7 +11,7 @@ services:
         networks:
             - backend
         volumes:
-            - 'html:${WEBSERVER_DOC_ROOT}'
+            - 'html:${DJANGO_WEBSERVER_DOC_ROOT}'
         hostname: django
         restart: unless-stopped
         ports:
@@ -43,7 +43,7 @@ services:
             - backend
             - frontend
         volumes:
-            - 'html:${WEBSERVER_DOC_ROOT}'
+            - 'html:${DJANGO_WEBSERVER_DOC_ROOT}'
             - type: bind
               source: ./webserver
               target: '${HTTPD_PREFIX}/conf'
