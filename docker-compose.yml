@@ -40,7 +40,6 @@ services:
             - backend
             - frontend
         volumes:
-            - 'html:${DJANGO_WEBSERVER_DOC_ROOT}'
             - type: bind
               source: ./webserver
               target: '${HTTPD_PREFIX}/conf'
