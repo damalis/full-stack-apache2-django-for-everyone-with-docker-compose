@@ -26,7 +26,10 @@ services:
             TZ: '${LOCAL_TIMEZONE}'
         labels:            
             - 'docker-volume-backup.stop-during-backup=true'
-        command: sh -c "if [ ! -f \"/app/manage.py\" ]; then django-admin startproject webapp . ; fi && gunicorn webapp.wsgi -b 0.0.0.0:9000"
+        command: >
+            sh -c "if [ ! -f \"/app/manage.py\" ]; then django-admin startproject webapp . ; fi && 
+            sed -i \"s/ALLOWED_HOSTS = \\[\\]/ALLOWED_HOSTS = \\['*'\\]/;s/from pathlib import Path/import os\\n\\nfrom pathlib import Path/;s/TIME_ZONE = 'UTC'/TIME_ZONE = os.environ.get('LOCAL_TIMEZONE')/\" ${DJANGO_WEBSERVER_DOC_ROOT}/webapp/settings.py; 
+            gunicorn webapp.wsgi -b 0.0.0.0:9000"
 
     webserver:
         depends_on:
