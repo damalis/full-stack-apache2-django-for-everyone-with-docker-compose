@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV TZ=${LOCAL_TIMEZONE}
 
-RUN apt-get update -y && \
+RUN set -ex && apt-get update -y && \
     apt-get install -y apt-utils \
 		--no-install-recommends \
 		python3-dev \
