@@ -233,7 +233,7 @@ You might need to edit ALLOWED_HOSTS inside settings.py and add your Docker host
 
 This value is not safe for production usage. Refer to the [Django documentation](https://docs.djangoproject.com/en/1.11/ref/settings/#allowed-hosts) for more information.
 
-```TIME_ZONE = os.environ.get('LOCAL_TIMEZONE')```
+```TIME_ZONE = os.environ.get('TZ')```
 
 ```
 docker container restart django
