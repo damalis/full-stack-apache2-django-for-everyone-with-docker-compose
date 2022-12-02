@@ -5,7 +5,9 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NOWARNINGS="yes"
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV TZ=${LOCAL_TIMEZONE}
+ENV TZ=${TZ}
+ENV PATH /home/html/.local/bin:$PATH
+ENV LANG=C.UTF-8
 
 RUN set -ex && apt-get update -y && \
     apt-get install -y apt-utils \
@@ -18,8 +20,6 @@ RUN set -ex && apt-get update -y && \
 RUN adduser --disabled-password --gecos '' html
 
 USER html
-
-ENV PATH="$PATH:/home/html/.local/bin"
 
 RUN pip install --upgrade pip
 
