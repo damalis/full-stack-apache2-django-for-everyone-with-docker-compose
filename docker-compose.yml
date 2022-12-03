@@ -6,7 +6,7 @@ services:
         depends_on:
             - database
         build: ./docker/4.1
-        image: 'django/4.1'
+        #image: 'damalis/django:4.1'
         container_name: django
         networks:
             - backend
