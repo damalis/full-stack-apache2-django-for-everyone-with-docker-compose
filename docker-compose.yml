@@ -21,7 +21,7 @@ services:
             - database
             - redis
         healthcheck:
-            test: ["CMD-SHELL", "/bin/pidof php-fpm > /dev/null || exit 1"]
+            test: ["CMD-SHELL", "/bin/pidof python > /dev/null || exit 1"]
             interval: 5s
             timeout: 5s
             retries: 50
@@ -33,8 +33,8 @@ services:
         labels:
             - 'docker-volume-backup.stop-during-backup=true'
         command: >
-            sh -c "if [ ! -f \"/app/manage.py\" ]; then django-admin startproject . ${DJANGO_WEBSERVER_DOC_ROOT}; fi && 
-            sed -i \"s/ALLOWED_HOSTS = \\[\\]/ALLOWED_HOSTS = \\['*'\\]/;s/from pathlib import Path/import os\\n\\nfrom pathlib import Path/;s/TIME_ZONE = 'UTC'/TIME_ZONE = os.environ.get('TZ')/\" ${DJANGO_WEBSERVER_DOC_ROOT}/settings.py; 
+            sh -c "if [ ! -f \"/app/manage.py\" ]; then django-admin startproject webapp ${DJANGO_WEBSERVER_DOC_ROOT}; fi && 
+            sed -i \"s/ALLOWED_HOSTS = \\[\\]/ALLOWED_HOSTS = \\['*'\\]/;s/from pathlib import Path/import os\\n\\nfrom pathlib import Path/;s/TIME_ZONE = 'UTC'/TIME_ZONE = os.environ.get('TZ')/\" ${DJANGO_WEBSERVER_DOC_ROOT}/webapp/settings.py; 
             gunicorn webapp.wsgi -b 0.0.0.0:9000"
 
     webserver:
