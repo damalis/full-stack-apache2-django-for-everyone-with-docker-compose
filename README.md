@@ -1,8 +1,8 @@
 # [full stack apache2 Django for everyone with docker compose](https://github.com/damalis/full-stack-apache2-django-for-everyone-with-docker-compose)
 
-If You want to build a website with Django at short time;
+If You want to build a website with Django "webapp" at short time;
 
-#### Full stack Apache2 Django:
+#### Full stack Apache2 Django "webapp":
 <p align="left"> <a href="https://www.djangoproject.com/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/27804?s=200&v=4" alt="Django" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; 
 <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/docker/docker.png" alt="docker" width="40" height="40" width="40"/> </a>&nbsp;&nbsp;&nbsp; 
 <a href="https://mariadb.org/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/5877084?s=200&v=4" alt="mariadb" height="50" width="50"/> </a>&nbsp;&nbsp;&nbsp; 
@@ -292,7 +292,7 @@ This value is not safe for production usage. Refer to the [Django documentation]
 docker container restart django
 ```
 
-add and/or remove django site folders and files with any ftp client program in ```./django``` folder.
+add and/or remove django site folders and files with any ftp client program in ```./django/webapp``` folder.
 <br />You can also visit `https://example.com` to access website after starting the containers.
 
 #### Webserver
