@@ -4,8 +4,8 @@ services:
         depends_on:
             database:
                 condition: service_healthy
-        build: ./docker/5.0
-        #image: 'damalis/django:5.0'
+        build: ./docker/5.2
+        #image: 'damalis/django:5.2'
         container_name: django
         networks:
             - backend
@@ -19,7 +19,7 @@ services:
             - database
             - redis
         healthcheck:
-            test: ["CMD-SHELL", "/bin/pidof python > /dev/null || exit 1"]
+            test: ["CMD-SHELL", "pgrep -P 1 -f gunicorn > /dev/null || exit 1"]
             interval: 5s
             timeout: 5s
             retries: 50
@@ -86,8 +86,7 @@ services:
             retries: 20
         environment:
             TZ: '${LOCAL_TIMEZONE}'
-        entrypoint: /bin/sh -c "certbot certonly --webroot --webroot-path /tmp/acme-challenge --rsa-key-size 4096 --non-interactive --agree-tos --no-eff-email --force-renewal --email ${LETSENCRYPT_EMAIL} -d ${DOMAIN_NAME} -d www.${DOMAIN_NAME}; 
-            trap exit TERM; while :; do certbot renew --dry-run; sleep 12h & wait $${!}; done;"
+        entrypoint: /bin/sh -c "${SSL_SNIPPET}; trap exit TERM; while :; do certbot renew --dry-run; sleep 12h & wait $${!}; done;"
 
     phpmyadmin:
         depends_on:
@@ -170,7 +169,7 @@ services:
             - "docker-volume-backup.stop-during-backup=true"
             - "docker-volume-backup.archive-pre=/bin/sh -c 'mysqldump -uroot -p${MYSQL_ROOT_PASSWORD} --all-databases > /tmp/backup/db_backup_data.sql'"
             - "docker-volume-backup.exec-label=database"
-        command: bash -c "${DATABASE_PACKAGE_MANAGER} && export PMA_CONTROLUSER=${PMA_CONTROLUSER} export PMA_CONTROLPASS=${PMA_CONTROLPASS} && envsubst '$$PMA_CONTROLUSER,$$PMA_CONTROLPASS' < /docker-entrypoint-initdb.d/create_tables.sql.template > /docker-entrypoint-initdb.d/create_tables.sql && docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+        command: bash -c "${DATABASE_PACKAGE_MANAGER} && chmod 0444 ${MYSQL_CONF_PREFIX}/z-mysql.cnf && export PMA_CONTROLUSER=${PMA_CONTROLUSER} export PMA_CONTROLPASS=${PMA_CONTROLPASS} && envsubst '$$PMA_CONTROLUSER,$$PMA_CONTROLPASS' < /docker-entrypoint-initdb.d/create_tables.sql.template > /docker-entrypoint-initdb.d/create_tables.sql && docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
 
     redis:
         image: redis:latest
